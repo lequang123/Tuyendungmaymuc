@@ -65,7 +65,7 @@ function CourseCard({ course }: { course: Course }) {
 }
 
 export default function Courses() {
-  const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(true);
 
   return (
     <section className="section" id="khoa-hoc">
