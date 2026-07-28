@@ -1,0 +1,77 @@
+.floating {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 2rem;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  opacity: 0;
+  transform: translateX(80px);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.floating.visible {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem 1.125rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.btn:hover {
+  transform: translateX(-4px) scale(1.03);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+}
+
+.zalo {
+  background: #0068ff;
+  color: white;
+}
+
+.zalo:hover {
+  background: #0055cc;
+}
+
+.phone {
+  background: #22c55e;
+  color: white;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+.phone:hover {
+  background: #16a34a;
+  animation: none;
+}
+
+.register {
+  background: var(--gradient-accent);
+  color: #0a1628;
+}
+
+/* Responsive – collapse to icons on very small screens */
+@media (max-width: 400px) {
+  .btn span {
+    display: none;
+  }
+  .btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    padding: 0;
+    justify-content: center;
+  }
+}

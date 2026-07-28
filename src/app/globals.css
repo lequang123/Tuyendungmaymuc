@@ -1,0 +1,426 @@
+/* ============================================
+   GLOBAL CSS - Đào Tạo Nghề Thanh Hóa
+   Design System: Light Professional Theme
+   Tone: White + Blue + Orange Accent
+   ============================================ */
+
+/* --- Google Fonts Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
+
+/* --- CSS Custom Properties --- */
+:root {
+  /* Primary Brand Colors */
+  --color-primary: #1d4ed8;
+  --color-primary-dark: #1e3a8a;
+  --color-primary-light: #3b82f6;
+  --color-primary-subtle: #eff6ff;
+  --color-primary-muted: #dbeafe;
+
+  /* Accent (Orange/Amber) */
+  --color-accent: #f59e0b;
+  --color-accent-dark: #d97706;
+  --color-accent-light: #fcd34d;
+  --color-accent-subtle: #fffbeb;
+  --color-accent-muted: #fde68a;
+
+  /* Success / Error */
+  --color-success: #059669;
+  --color-success-subtle: #ecfdf5;
+  --color-danger: #dc2626;
+  --color-danger-subtle: #fef2f2;
+
+  /* Neutral Grays */
+  --color-bg: #f8fafc;
+  --color-bg-white: #ffffff;
+  --color-bg-section: #f1f5f9;
+  --color-bg-section-alt: #e8f0fe;
+  --color-bg-card: #ffffff;
+  --color-bg-card-hover: #f8fafc;
+
+  /* Borders */
+  --color-border: #e2e8f0;
+  --color-border-medium: #cbd5e1;
+  --color-border-accent: rgba(245, 158, 11, 0.35);
+
+  /* Text */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+  --color-text-on-primary: #ffffff;
+  --color-text-on-accent: #451a03;
+
+  /* Gradients */
+  --gradient-hero: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 40%, #2563eb 70%, #1d4ed8 100%);
+  --gradient-card: linear-gradient(145deg, #ffffff, #f8fafc);
+  --gradient-accent: linear-gradient(135deg, #f59e0b, #fbbf24);
+  --gradient-blue: linear-gradient(135deg, #1d4ed8, #3b82f6);
+  --gradient-section-blue: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%);
+  --gradient-section-white: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+
+  /* Typography */
+  --font-family: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.85rem;
+  --font-size-base: 0.95rem;
+  --font-size-lg: 1.0625rem;
+  --font-size-xl: 1.1875rem;
+  --font-size-2xl: 1.375rem;
+  --font-size-3xl: 1.625rem;
+  --font-size-4xl: 2rem;
+  --font-size-5xl: 2.5rem;
+  --font-size-6xl: 3.25rem;
+
+  /* Spacing */
+  --space-1: 0.2rem;
+  --space-2: 0.4rem;
+  --space-3: 0.6rem;
+  --space-4: 0.85rem;
+  --space-5: 1.1rem;
+  --space-6: 1.35rem;
+  --space-8: 1.75rem;
+  --space-10: 2.2rem;
+  --space-12: 2.6rem;
+  --space-16: 3rem;
+  --space-20: 3.75rem;
+  --space-24: 4.5rem;
+
+  /* Border Radius */
+  --radius-sm: 0.3rem;
+  --radius-md: 0.45rem;
+  --radius-lg: 0.6rem;
+  --radius-xl: 0.85rem;
+  --radius-2xl: 1.25rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 3px 10px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.03);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.08), 0 3px 8px rgba(0,0,0,0.04);
+  --shadow-xl: 0 16px 40px rgba(0,0,0,0.1), 0 6px 16px rgba(0,0,0,0.05);
+  --shadow-card: 0 2px 6px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.03);
+  --shadow-card-hover: 0 6px 20px rgba(29,78,216,0.08), 0 0 0 1px rgba(29,78,216,0.08);
+  --shadow-glow-accent: 0 3px 15px rgba(245,158,11,0.2);
+  --shadow-glow-blue: 0 3px 15px rgba(29,78,216,0.18);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
+  --transition-slow: 0.4s ease;
+
+  /* Layout */
+  --container-max: 1120px;
+  --container-padding: 1.25rem;
+  --header-height: 65px;
+}
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-width: 320px;
+}
+
+/* --- Typography --- */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+}
+
+p { color: var(--color-text-secondary); }
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+img { max-width: 100%; height: auto; }
+
+ul, ol { list-style: none; }
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+/* --- Layout Utilities --- */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+
+.section {
+  padding: var(--space-20) 0;
+  background: var(--color-bg-white);
+}
+
+.section-alt {
+  background: var(--color-bg-section);
+}
+
+/* --- Section Headings --- */
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
+
+.section-label {
+  display: inline-block;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-primary);
+  background: var(--color-primary-subtle);
+  border: 1px solid var(--color-primary-muted);
+  padding: 0.3rem var(--space-4);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-3);
+}
+
+.section-title {
+  font-size: var(--font-size-4xl);
+  font-weight: 800;
+  margin-bottom: var(--space-4);
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.section-desc {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* --- Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  transition: all var(--transition-base);
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--gradient-blue);
+  color: #ffffff;
+  box-shadow: var(--shadow-glow-blue);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(29,78,216,0.35);
+}
+
+.btn-accent {
+  background: var(--gradient-accent);
+  color: var(--color-text-on-accent);
+  box-shadow: var(--shadow-glow-accent);
+}
+
+.btn-accent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(245,158,11,0.4);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary-light);
+}
+
+.btn-outline:hover {
+  background: var(--color-primary-subtle);
+  border-color: var(--color-primary);
+}
+
+.btn-outline-white {
+  background: rgba(255,255,255,0.15);
+  color: #ffffff;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  backdrop-filter: blur(8px);
+}
+
+.btn-outline-white:hover {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.7);
+}
+
+.btn-lg {
+  padding: var(--space-4) var(--space-10);
+  font-size: var(--font-size-lg);
+}
+
+/* --- Cards --- */
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-base);
+}
+
+.card:hover {
+  border-color: rgba(29,78,216,0.2);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* --- Badge --- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.badge-hot {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.badge-new {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.badge-popular {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fde68a;
+}
+
+/* --- Grid --- */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+
+/* --- Decorative Elements --- */
+.gradient-line {
+  height: 3px;
+  background: var(--gradient-accent);
+  border-radius: var(--radius-full);
+  width: 50px;
+  margin: var(--space-3) auto 0;
+}
+
+/* --- Divider --- */
+.section-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 0;
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg-section); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-medium);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-primary-light); }
+
+/* --- Animations --- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.4); }
+  50% { transform: scale(1.04); box-shadow: 0 0 0 8px rgba(5, 150, 105, 0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.6s ease both;
+}
+
+.animate-delay-1 { animation-delay: 0.1s; }
+.animate-delay-2 { animation-delay: 0.2s; }
+.animate-delay-3 { animation-delay: 0.3s; }
+.animate-delay-4 { animation-delay: 0.4s; }
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  :root {
+    --font-size-5xl: 2.5rem;
+    --font-size-6xl: 3rem;
+  }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --container-padding: 1rem;
+    --font-size-4xl: 1.75rem;
+    --font-size-3xl: 1.5rem;
+    --space-20: 3.5rem;
+    --space-16: 2.5rem;
+  }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .section-title { font-size: var(--font-size-3xl); }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --font-size-4xl: 1.5rem;
+  }
+}

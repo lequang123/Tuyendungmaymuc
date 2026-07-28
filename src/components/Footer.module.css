@@ -1,0 +1,153 @@
+.footer {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.footerTop {
+  padding: 4rem 0 2.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 3rem;
+}
+
+/* Brand */
+.brand {}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.logoMain {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #f1f5f9;
+  letter-spacing: 0.05em;
+}
+
+.logoSub {
+  font-size: 0.7rem;
+  color: #fbbf24;
+  font-weight: 500;
+}
+
+.brandDesc {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.socialBtn {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  transition: all 0.2s ease;
+}
+
+.socialBtn:hover {
+  background: rgba(29,78,216,0.3);
+  border-color: rgba(59,130,246,0.4);
+  color: #93c5fd;
+}
+
+/* Columns */
+.colTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #fbbf24;
+  margin-bottom: 1rem;
+}
+
+.linkList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footerLink {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+.footerLink:hover {
+  color: #e2e8f0;
+}
+
+/* Contact Info */
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contactInfoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  font-size: 0.875rem;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+.contactInfoItem span:first-child {
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+/* Footer Bottom */
+.footerBottom {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 1.25rem 0;
+  text-align: center;
+}
+
+.footerBottom p {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+
+.seoText {
+  font-size: 0.7rem !important;
+  color: rgba(100,116,139,0.4) !important;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .brand {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .brand {
+    grid-column: span 1;
+  }
+}
