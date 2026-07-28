@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://daotaonghethanhoa.vn/sitemap.xml',
+    sitemap: 'https://www.truongdaotaonghethanhhoa.online/sitemap.xml',
   };
 }
