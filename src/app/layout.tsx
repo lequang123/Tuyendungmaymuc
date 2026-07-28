@@ -29,6 +29,7 @@ export const metadata: Metadata = {
     "học lái máy múc toàn quốc",
     "cấp chứng chỉ máy xúc toàn quốc",
     "học lái xe lu toàn quốc",
+    "cấp chứng chỉ xe lu toàn quốc",
     "đào tạo thợ hàn toàn quốc",
     "trung tâm đào tạo nghề toàn quốc",
     "chứng chỉ vận hành máy móc toàn quốc",
@@ -38,7 +39,9 @@ export const metadata: Metadata = {
     "cấp chứng chỉ xe nâng Thanh Hóa",
     "học lái máy múc Thanh Hóa",
     "học lái máy xúc Thanh Hóa",
+    "cấp chứng chỉ máy múc Thanh Hóa",
     "học lái xe lu Thanh Hóa",
+    "cấp chứng chỉ xe lu Thanh Hóa",
     "chứng chỉ xe nâng Thanh Hóa",
     "đào tạo thợ hàn Thanh Hóa",
     "trung tâm đào tạo nghề Thanh Hóa",
@@ -46,106 +49,184 @@ export const metadata: Metadata = {
     // Hà Nội
     "cấp chứng chỉ xe nâng Hà Nội",
     "học lái máy múc Hà Nội",
+    "cấp chứng chỉ máy múc Hà Nội",
+    "học lái xe lu Hà Nội",
     "đào tạo thợ hàn Hà Nội",
     "chứng chỉ vận hành máy móc Hà Nội",
     // Hồ Chí Minh
     "cấp chứng chỉ xe nâng TP HCM",
     "học lái máy múc TP Hồ Chí Minh",
+    "cấp chứng chỉ máy múc TP HCM",
+    "học lái xe lu TP HCM",
     "đào tạo thợ hàn TP HCM",
     "chứng chỉ xe nâng Sài Gòn",
     // Đà Nẵng
     "cấp chứng chỉ xe nâng Đà Nẵng",
     "học lái máy xúc Đà Nẵng",
+    "cấp chứng chỉ máy múc Đà Nẵng",
+    "học lái xe lu Đà Nẵng",
     "đào tạo thợ hàn Đà Nẵng",
     // Hải Phòng
     "cấp chứng chỉ xe nâng Hải Phòng",
     "học lái máy múc Hải Phòng",
+    "cấp chứng chỉ máy múc Hải Phòng",
+    "học lái xe lu Hải Phòng",
     "đào tạo nghề Hải Phòng",
     // Nghệ An
     "cấp chứng chỉ xe nâng Nghệ An",
     "học lái máy xúc Nghệ An",
+    "cấp chứng chỉ máy múc Nghệ An",
+    "học lái xe lu Nghệ An",
     "đào tạo thợ hàn Nghệ An",
     // Hà Tĩnh
     "cấp chứng chỉ xe nâng Hà Tĩnh",
     "học lái máy múc Hà Tĩnh",
+    "cấp chứng chỉ máy múc Hà Tĩnh",
+    "học lái xe lu Hà Tĩnh",
     // Quảng Bình
     "cấp chứng chỉ xe nâng Quảng Bình",
     "học lái máy xúc Quảng Bình",
+    "cấp chứng chỉ máy múc Quảng Bình",
+    "học lái xe lu Quảng Bình",
     // Quảng Trị
     "cấp chứng chỉ xe nâng Quảng Trị",
     "học lái máy múc Quảng Trị",
+    "cấp chứng chỉ máy múc Quảng Trị",
+    "học lái xe lu Quảng Trị",
     // Thừa Thiên Huế
     "cấp chứng chỉ xe nâng Huế",
     "học lái máy xúc Thừa Thiên Huế",
+    "cấp chứng chỉ máy múc Huế",
+    "học lái xe lu Huế",
     // Quảng Nam
     "cấp chứng chỉ xe nâng Quảng Nam",
     "học lái máy múc Quảng Nam",
+    "cấp chứng chỉ máy múc Quảng Nam",
+    "học lái xe lu Quảng Nam",
     // Quảng Ngãi
     "cấp chứng chỉ xe nâng Quảng Ngãi",
+    "học lái máy múc Quảng Ngãi",
+    "học lái xe lu Quảng Ngãi",
     // Bình Định
     "cấp chứng chỉ xe nâng Bình Định",
     "học lái máy xúc Bình Định",
+    "học lái máy múc Bình Định",
+    "học lái xe lu Bình Định",
     // Phú Yên
     "cấp chứng chỉ xe nâng Phú Yên",
+    "học lái máy múc Phú Yên",
+    "học lái xe lu Phú Yên",
     // Khánh Hòa
     "cấp chứng chỉ xe nâng Khánh Hòa",
     "học lái máy múc Nha Trang",
+    "học lái máy múc Khánh Hòa",
+    "học lái xe lu Khánh Hòa",
     // Bình Dương
     "cấp chứng chỉ xe nâng Bình Dương",
     "học lái máy xúc Bình Dương",
+    "cấp chứng chỉ máy múc Bình Dương",
+    "học lái xe lu Bình Dương",
     "đào tạo thợ hàn Bình Dương",
     // Đồng Nai
     "cấp chứng chỉ xe nâng Đồng Nai",
     "học lái máy múc Đồng Nai",
+    "cấp chứng chỉ máy múc Đồng Nai",
+    "học lái xe lu Đồng Nai",
     // Bà Rịa - Vũng Tàu
     "cấp chứng chỉ xe nâng Vũng Tàu",
     "học lái máy xúc Bà Rịa Vũng Tàu",
+    "cấp chứng chỉ máy múc Vũng Tàu",
+    "học lái xe lu Vũng Tàu",
     // Long An
     "cấp chứng chỉ xe nâng Long An",
+    "học lái máy múc Long An",
+    "học lái xe lu Long An",
     // Cần Thơ
     "cấp chứng chỉ xe nâng Cần Thơ",
     "học lái máy múc Cần Thơ",
+    "cấp chứng chỉ máy múc Cần Thơ",
+    "học lái xe lu Cần Thơ",
     // Ninh Bình
     "cấp chứng chỉ xe nâng Ninh Bình",
+    "học lái máy múc Ninh Bình",
+    "học lái xe lu Ninh Bình",
     // Nam Định
     "cấp chứng chỉ xe nâng Nam Định",
+    "học lái máy múc Nam Định",
+    "học lái xe lu Nam Định",
     // Thái Bình
     "cấp chứng chỉ xe nâng Thái Bình",
+    "học lái máy múc Thái Bình",
+    "học lái xe lu Thái Bình",
     // Hà Nam
     "cấp chứng chỉ xe nâng Hà Nam",
+    "học lái máy múc Hà Nam",
+    "học lái xe lu Hà Nam",
     // Hưng Yên
     "cấp chứng chỉ xe nâng Hưng Yên",
+    "học lái máy múc Hưng Yên",
+    "học lái xe lu Hưng Yên",
     // Bắc Ninh
     "cấp chứng chỉ xe nâng Bắc Ninh",
+    "học lái máy múc Bắc Ninh",
+    "học lái xe lu Bắc Ninh",
     // Hải Dương
     "cấp chứng chỉ xe nâng Hải Dương",
+    "học lái máy múc Hải Dương",
+    "học lái xe lu Hải Dương",
     // Vĩnh Phúc
     "cấp chứng chỉ xe nâng Vĩnh Phúc",
+    "học lái máy múc Vĩnh Phúc",
+    "học lái xe lu Vĩnh Phúc",
     // Phú Thọ
     "cấp chứng chỉ xe nâng Phú Thọ",
+    "học lái máy múc Phú Thọ",
+    "học lái xe lu Phú Thọ",
     // Thái Nguyên
     "cấp chứng chỉ xe nâng Thái Nguyên",
+    "học lái máy múc Thái Nguyên",
+    "học lái xe lu Thái Nguyên",
     // Bắc Giang
     "cấp chứng chỉ xe nâng Bắc Giang",
+    "học lái máy múc Bắc Giang",
+    "học lái xe lu Bắc Giang",
     // Quảng Ninh
     "cấp chứng chỉ xe nâng Quảng Ninh",
+    "học lái máy múc Quảng Ninh",
+    "học lái xe lu Quảng Ninh",
     // Lào Cai
     "cấp chứng chỉ xe nâng Lào Cai",
+    "học lái máy múc Lào Cai",
+    "học lái xe lu Lào Cai",
     // Đắk Lắk
     "cấp chứng chỉ xe nâng Đắk Lắk",
+    "học lái máy múc Đắk Lắk",
+    "học lái xe lu Đắk Lắk",
     // Gia Lai
     "cấp chứng chỉ xe nâng Gia Lai",
+    "học lái máy múc Gia Lai",
+    "học lái xe lu Gia Lai",
     // Lâm Đồng
     "cấp chứng chỉ xe nâng Lâm Đồng",
     "học lái máy xúc Đà Lạt",
+    "học lái máy múc Lâm Đồng",
+    "học lái xe lu Lâm Đồng",
     // Tiền Giang
     "cấp chứng chỉ xe nâng Tiền Giang",
+    "học lái máy múc Tiền Giang",
+    "học lái xe lu Tiền Giang",
     // Đồng Tháp
     "cấp chứng chỉ xe nâng Đồng Tháp",
+    "học lái máy múc Đồng Tháp",
+    "học lái xe lu Đồng Tháp",
     // An Giang
     "cấp chứng chỉ xe nâng An Giang",
+    "học lái máy múc An Giang",
+    "học lái xe lu An Giang",
     // Kiên Giang
     "cấp chứng chỉ xe nâng Kiên Giang",
+    "học lái máy múc Kiên Giang",
+    "học lái xe lu Kiên Giang",
   ],
   authors: [{ name: "Trung Tâm Đào Tạo Và Bồi Dưỡng Về Quản Lý" }],
   creator: "Trung Tâm Đào Tạo Và Bồi Dưỡng Về Quản Lý",
