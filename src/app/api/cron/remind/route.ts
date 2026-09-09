@@ -1,50 +1,74 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getStudentsTomorrow, markReminded } from '@/lib/storage';
-import { sendMessage, formatReminder } from '@/lib/telegram';
+import { getStudents } from '@/lib/storage';
+import { sendMessage } from '@/lib/telegram';
+import type { Student } from '@/lib/storage';
 
 // ============================================================
-// Cron Job: Daily Reminder (8:00 AM Vietnam = 01:00 UTC)
+// ⚠️ TEST MODE — Cron Job chạy mỗi 5 phút, gửi toàn bộ DS
+// TODO: Đổi lại production mode sau khi test xong
 // ============================================================
 
 export async function GET(request: NextRequest) {
-  // Verify cron secret (Vercel sends this automatically)
+  // Bỏ auth check tạm thời để test dễ hơn
   const authHeader = request.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  const cronSecret = process.env.CRON_SECRET;
+  if (cronSecret && authHeader && authHeader !== `Bearer ${cronSecret}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
-    // Get students with registration date = tomorrow
-    const students = await getStudentsTomorrow();
+    // TEST MODE: Lấy toàn bộ học viên thay vì chỉ ngày mai
+    const students = await getStudents();
 
     if (students.length === 0) {
-      console.log('Cron: No students tomorrow. Skipping reminder.');
+      await sendMessage('🔔 <b>TEST REMINDER</b>\n\n📭 Chưa có học viên nào trong danh sách.');
       return NextResponse.json({
         success: true,
-        message: 'No students tomorrow',
+        message: 'No students in list',
         count: 0,
       });
     }
 
-    // Send reminder to Telegram
-    const message = formatReminder(students);
+    // Format và gửi
+    const message = formatTestReminder(students);
     await sendMessage(message);
 
-    // Mark as reminded
-    await markReminded(students.map((s) => s.id));
-
-    console.log(`Cron: Sent reminder for ${students.length} students.`);
+    console.log(`Cron TEST: Sent reminder for ${students.length} students.`);
 
     return NextResponse.json({
       success: true,
-      message: `Reminded ${students.length} students`,
+      message: `TEST reminded ${students.length} students`,
       count: students.length,
+      mode: 'TEST',
     });
   } catch (error) {
     console.error('Cron error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', detail: error instanceof Error ? error.message : String(error) },
       { status: 500 },
     );
   }
+}
+
+function formatTestReminder(students: Student[]): string {
+  const lines = students.map((s) => {
+    const typeLabel = s.type === 'chungchi' ? '📜 Chứng chỉ' : '🎓 Đào tạo';
+    const dateParts = s.registrationDate.split('-');
+    const dateFormatted = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+    return [
+      `👤 <b>${s.name}</b>`,
+      `📞 ${s.phone}`,
+      `${typeLabel} — Xe ${s.vehicle}`,
+      `📅 ${dateFormatted}`,
+    ].join('\n');
+  });
+
+  return [
+    `🧪 <b>TEST REMINDER — Danh sách toàn bộ học viên</b>`,
+    ``,
+    ...lines.map((l) => l + '\n'),
+    `📊 Tổng: <b>${students.length}</b> học viên`,
+    ``,
+    `<i>⚠️ Đây là chế độ test. Production sẽ chỉ gửi học viên ngày mai.</i>`,
+  ].join('\n');
 }
