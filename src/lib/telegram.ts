@@ -10,6 +10,23 @@ const CHAT_ID = process.env.TELEGRAM_CHAT_ID!;
 const API_BASE = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
 // ============================================================
+// Keyboard types
+// ============================================================
+
+interface InlineButton {
+  text: string;
+  callback_data: string;
+}
+
+type InlineKeyboard = InlineButton[][];
+
+interface ReplyButton {
+  text: string;
+}
+
+type ReplyKeyboard = ReplyButton[][];
+
+// ============================================================
 // Send message
 // ============================================================
 
@@ -27,6 +44,131 @@ export async function sendMessage(
     }),
   });
 }
+
+/**
+ * Send message with inline keyboard buttons.
+ */
+export async function sendMessageWithInlineKeyboard(
+  text: string,
+  keyboard: InlineKeyboard,
+  chatId: string = CHAT_ID,
+): Promise<void> {
+  await fetch(`${API_BASE}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text,
+      parse_mode: 'HTML',
+      reply_markup: {
+        inline_keyboard: keyboard,
+      },
+    }),
+  });
+}
+
+/**
+ * Send message with persistent reply keyboard at the bottom.
+ */
+export async function sendMessageWithReplyKeyboard(
+  text: string,
+  keyboard: ReplyKeyboard,
+  chatId: string = CHAT_ID,
+): Promise<void> {
+  await fetch(`${API_BASE}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text,
+      parse_mode: 'HTML',
+      reply_markup: {
+        keyboard,
+        resize_keyboard: true,
+        is_persistent: true,
+      },
+    }),
+  });
+}
+
+/**
+ * Answer a callback query (dismiss the "loading" state on inline button).
+ */
+export async function answerCallbackQuery(
+  callbackQueryId: string,
+  text?: string,
+): Promise<void> {
+  await fetch(`${API_BASE}/answerCallbackQuery`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      callback_query_id: callbackQueryId,
+      text,
+    }),
+  });
+}
+
+/**
+ * Set bot commands menu (appears in the "/" menu).
+ */
+export async function setBotCommands(): Promise<void> {
+  await fetch(`${API_BASE}/setMyCommands`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      commands: [
+        { command: 'add', description: '📝 Thêm học viên mới' },
+        { command: 'list', description: '📋 Xem toàn bộ danh sách' },
+        { command: 'listcc', description: '📜 Danh sách học chứng chỉ' },
+        { command: 'listdt', description: '🎓 Danh sách học đào tạo' },
+        { command: 'week', description: '📅 Danh sách 7 ngày tới' },
+        { command: 'tomorrow', description: '⏰ Danh sách ngày mai' },
+        { command: 'menu', description: '🏠 Hiện menu chính' },
+        { command: 'help', description: '❓ Hướng dẫn sử dụng' },
+      ],
+    }),
+  });
+}
+
+// ============================================================
+// Pre-built keyboards
+// ============================================================
+
+/** Main menu inline keyboard */
+export const MAIN_MENU_KEYBOARD: InlineKeyboard = [
+  [
+    { text: '📝 Thêm học viên', callback_data: 'cmd_add' },
+    { text: '📋 Danh sách', callback_data: 'cmd_list' },
+  ],
+  [
+    { text: '📜 Chứng chỉ', callback_data: 'cmd_listcc' },
+    { text: '🎓 Đào tạo', callback_data: 'cmd_listdt' },
+  ],
+  [
+    { text: '📅 7 ngày tới', callback_data: 'cmd_week' },
+    { text: '⏰ Ngày mai', callback_data: 'cmd_tomorrow' },
+  ],
+  [
+    { text: '❓ Hướng dẫn', callback_data: 'cmd_help' },
+  ],
+];
+
+/** Persistent reply keyboard at the bottom */
+export const REPLY_KEYBOARD: ReplyKeyboard = [
+  [{ text: '📋 Danh sách' }, { text: '📝 Thêm HV' }],
+  [{ text: '📜 Chứng chỉ' }, { text: '🎓 Đào tạo' }],
+  [{ text: '📅 7 ngày tới' }, { text: '⏰ Ngày mai' }],
+];
+
+/** Map reply keyboard text → command */
+export const REPLY_TEXT_TO_COMMAND: Record<string, string> = {
+  '📋 Danh sách': '/list',
+  '📝 Thêm HV': '/add',
+  '📜 Chứng chỉ': '/listcc',
+  '🎓 Đào tạo': '/listdt',
+  '📅 7 ngày tới': '/week',
+  '⏰ Ngày mai': '/tomorrow',
+};
 
 // ============================================================
 // Format helpers
@@ -103,12 +245,12 @@ export function formatHelp(): string {
     `<code>/add Tên, SĐT, loại, ngày, xe</code>`,
     ``,
     `Trong đó:`,
-    `• <b>loại</b>: <code>chungchi</code> hoặc <code>daotao</code>`,
-    `• <b>ngày</b>: <code>YYYY-MM-DD</code> (VD: 2026-09-15)`,
+    `• <b>loại</b>: <code>1</code> = Chứng chỉ, <code>2</code> = Đào tạo`,
+    `• <b>ngày</b>: <code>DD-MM</code> (VD: 15-09)`,
     `• <b>xe</b>: B1, B2, C, D, E...`,
     ``,
     `<b>Ví dụ:</b>`,
-    `<code>/add Nguyễn Văn A, 0901234567, chungchi, 2026-09-15, B2</code>`,
+    `<code>/add Nguyễn Văn A, 0901234567, 1, 15-09, B2</code>`,
     ``,
     `📋 <b>Xem danh sách:</b>`,
     `/list — Toàn bộ học viên`,
@@ -120,8 +262,19 @@ export function formatHelp(): string {
     `🗑 <b>Xóa học viên:</b>`,
     `<code>/delete mã_id</code>`,
     ``,
+    `🏠 <b>Menu nhanh:</b>`,
+    `/menu — Hiện menu chọn nhanh`,
+    ``,
     `⏰ <b>Tự động nhắc nhở:</b>`,
     `Bot sẽ gửi tin nhắn lúc 8h sáng mỗi ngày nếu ngày mai có học viên đến đăng ký.`,
+  ].join('\n');
+}
+
+export function formatMainMenu(): string {
+  return [
+    `🏠 <b>MENU CHÍNH</b>`,
+    ``,
+    `Chọn chức năng bên dưới hoặc gõ lệnh trực tiếp:`,
   ].join('\n');
 }
 
@@ -148,10 +301,10 @@ export function parseAddCommand(text: string): ParsedStudent | string {
       `<code>/add Tên, SĐT, loại, ngày, xe</code>`,
       ``,
       `<b>Ví dụ:</b>`,
-      `<code>/add Nguyễn Văn A, 0901234567, chungchi, 2026-09-15, B2</code>`,
+      `<code>/add Nguyễn Văn A, 0901234567, 1, 15-09, B2</code>`,
       ``,
-      `• <b>loại</b>: <code>chungchi</code> hoặc <code>daotao</code>`,
-      `• <b>ngày</b>: định dạng <code>YYYY-MM-DD</code>`,
+      `• <b>loại</b>: <code>1</code> = Chứng chỉ, <code>2</code> = Đào tạo`,
+      `• <b>ngày</b>: <code>DD-MM</code> (VD: 15-09)`,
       `• <b>xe</b>: B1, B2, C, D, E...`,
     ].join('\n');
   }
@@ -159,25 +312,44 @@ export function parseAddCommand(text: string): ParsedStudent | string {
   const parts = content.split(',').map((p) => p.trim());
 
   if (parts.length < 5) {
-    return '❌ Thiếu thông tin! Cần đủ: Tên, SĐT, loại, ngày, xe\n\nVí dụ:\n<code>/add Nguyễn Văn A, 0901234567, chungchi, 2026-09-15, B2</code>';
+    return '❌ Thiếu thông tin! Cần đủ: Tên, SĐT, loại, ngày, xe\n\nVí dụ:\n<code>/add Nguyễn Văn A, 0901234567, 1, 15-09, B2</code>';
   }
 
-  const [name, phone, typeRaw, date, vehicle] = parts;
+  const [name, phone, typeRaw, dateRaw, vehicle] = parts;
 
-  // Validate type
-  const typeLower = typeRaw.toLowerCase();
-  if (typeLower !== 'chungchi' && typeLower !== 'daotao') {
-    return '❌ Loại học không hợp lệ! Chỉ chấp nhận: <code>chungchi</code> hoặc <code>daotao</code>';
+  // Validate type: 1 = chungchi, 2 = daotao
+  const typeMap: Record<string, 'chungchi' | 'daotao'> = {
+    '1': 'chungchi',
+    '2': 'daotao',
+  };
+  const studentType = typeMap[typeRaw.trim()];
+  if (!studentType) {
+    return '❌ Loại học không hợp lệ!\n\n<code>1</code> = Chứng chỉ\n<code>2</code> = Đào tạo';
   }
 
-  // Validate date format
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-    return '❌ Ngày không đúng định dạng! Dùng: <code>YYYY-MM-DD</code>\nVí dụ: <code>2026-09-15</code>';
+  // Validate date format: DD-MM
+  const dateMatch = dateRaw.match(/^(\d{1,2})-(\d{1,2})$/);
+  if (!dateMatch) {
+    return '❌ Ngày không đúng định dạng! Dùng: <code>DD-MM</code>\nVí dụ: <code>15-09</code>';
   }
 
-  // Validate date is a real date
-  const dateObj = new Date(date + 'T00:00:00+07:00');
-  if (isNaN(dateObj.getTime())) {
+  const day = parseInt(dateMatch[1], 10);
+  const month = parseInt(dateMatch[2], 10);
+
+  if (month < 1 || month > 12 || day < 1 || day > 31) {
+    return '❌ Ngày hoặc tháng không hợp lệ!';
+  }
+
+  // Always use current year
+  const now = new Date();
+  const vnNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' }));
+  const year = vnNow.getFullYear();
+
+  const fullDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+  // Validate the constructed date is real
+  const dateObj = new Date(fullDate + 'T00:00:00+07:00');
+  if (isNaN(dateObj.getTime()) || dateObj.getDate() !== day) {
     return '❌ Ngày không hợp lệ!';
   }
 
@@ -189,8 +361,9 @@ export function parseAddCommand(text: string): ParsedStudent | string {
   return {
     name,
     phone: phone.replace(/[\s\-\.]/g, ''),
-    type: typeLower as 'chungchi' | 'daotao',
-    registrationDate: date,
+    type: studentType,
+    registrationDate: fullDate,
     vehicle: vehicle.toUpperCase(),
   };
 }
+

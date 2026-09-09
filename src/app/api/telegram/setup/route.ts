@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { setBotCommands } from '@/lib/telegram';
 
 // ============================================================
 // Telegram Webhook Setup (call once after deploy)
@@ -18,21 +19,25 @@ export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const webhookUrl = `${url.protocol}//${url.host}/api/telegram/webhook`;
 
-  // Register webhook with Telegram
+  // Register webhook with Telegram (include callback_query for inline buttons)
   const telegramUrl = `https://api.telegram.org/bot${botToken}/setWebhook`;
   const res = await fetch(telegramUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       url: webhookUrl,
-      allowed_updates: ['message'],
+      allowed_updates: ['message', 'callback_query'],
     }),
   });
 
-  const data = await res.json();
+  const webhookData = await res.json();
+
+  // Also register bot commands menu
+  await setBotCommands();
 
   return NextResponse.json({
     webhookUrl,
-    telegramResponse: data,
+    telegramResponse: webhookData,
+    commandsRegistered: true,
   });
 }

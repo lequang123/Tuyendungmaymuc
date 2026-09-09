@@ -9,10 +9,17 @@ import {
 } from '@/lib/storage';
 import {
   sendMessage,
+  sendMessageWithInlineKeyboard,
+  sendMessageWithReplyKeyboard,
+  answerCallbackQuery,
   formatStudentList,
   formatStudentAdded,
   formatHelp,
+  formatMainMenu,
   parseAddCommand,
+  MAIN_MENU_KEYBOARD,
+  REPLY_KEYBOARD,
+  REPLY_TEXT_TO_COMMAND,
 } from '@/lib/telegram';
 
 // ============================================================
@@ -22,19 +29,27 @@ import {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    console.log('Webhook received:', JSON.stringify(body));
+    console.log('Webhook received:', JSON.stringify(body).substring(0, 500));
 
-    // Extract message info
+    // Handle inline button callbacks
+    if (body?.callback_query) {
+      await handleCallbackQuery(body.callback_query);
+      return NextResponse.json({ ok: true });
+    }
+
+    // Handle regular messages
     const message = body?.message;
     if (!message?.text) {
-      console.log('No text in message, skipping');
       return NextResponse.json({ ok: true });
     }
 
     const chatId = message.chat.id.toString();
-    const text: string = message.text.trim();
+    let text: string = message.text.trim();
 
-    console.log(`Chat ID: ${chatId}, Command: ${text}`);
+    // Map reply keyboard button text → command
+    if (REPLY_TEXT_TO_COMMAND[text]) {
+      text = REPLY_TEXT_TO_COMMAND[text];
+    }
 
     // Strip @botname from commands (e.g. /add@MyBot → /add)
     const cleanText = text.replace(/^(\/\w+)@\w+/, '$1');
@@ -54,13 +69,15 @@ export async function POST(request: NextRequest) {
       await handleTomorrow(chatId);
     } else if (cleanText.startsWith('/delete')) {
       await handleDelete(chatId, cleanText);
+    } else if (cleanText === '/menu') {
+      await handleMenu(chatId);
     } else if (cleanText === '/help' || cleanText === '/start') {
-      await sendMessage(formatHelp(), chatId);
+      await handleStart(chatId);
     } else {
       // Don't reply to non-command messages in group chats
       if (message.chat.type === 'private') {
         await sendMessage(
-          '❓ Lệnh không hợp lệ. Gõ /help để xem hướng dẫn.',
+          '❓ Lệnh không hợp lệ. Gõ /help hoặc /menu để xem các chức năng.',
           chatId,
         );
       }
@@ -69,7 +86,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error('Webhook error:', error);
-    // Try to notify user about the error
     try {
       const body = await request.clone().json();
       const chatId = body?.message?.chat?.id?.toString();
@@ -82,7 +98,50 @@ export async function POST(request: NextRequest) {
     } catch {
       // ignore
     }
-    return NextResponse.json({ ok: true }); // Always return 200 to Telegram
+    return NextResponse.json({ ok: true });
+  }
+}
+
+// ============================================================
+// Callback Query Handler (inline buttons)
+// ============================================================
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function handleCallbackQuery(callbackQuery: any) {
+  const chatId = callbackQuery.message.chat.id.toString();
+  const data = callbackQuery.data;
+
+  // Acknowledge the button press immediately
+  await answerCallbackQuery(callbackQuery.id);
+
+  // Route callback commands
+  switch (data) {
+    case 'cmd_add':
+      await handleAdd(chatId, '/add');
+      break;
+    case 'cmd_list':
+      await handleList(chatId);
+      break;
+    case 'cmd_listcc':
+      await handleListByType(chatId, 'chungchi');
+      break;
+    case 'cmd_listdt':
+      await handleListByType(chatId, 'daotao');
+      break;
+    case 'cmd_week':
+      await handleWeek(chatId);
+      break;
+    case 'cmd_tomorrow':
+      await handleTomorrow(chatId);
+      break;
+    case 'cmd_help':
+      await sendMessage(formatHelp(), chatId);
+      break;
+    case 'cmd_menu':
+      await handleMenu(chatId);
+      break;
+    default:
+      break;
   }
 }
 
@@ -90,25 +149,36 @@ export async function POST(request: NextRequest) {
 // Command Handlers
 // ============================================================
 
+async function handleStart(chatId: string) {
+  // Send help text + show persistent reply keyboard
+  const helpText = formatHelp();
+  await sendMessageWithReplyKeyboard(helpText, REPLY_KEYBOARD, chatId);
+}
+
+async function handleMenu(chatId: string) {
+  await sendMessageWithInlineKeyboard(
+    formatMainMenu(),
+    MAIN_MENU_KEYBOARD,
+    chatId,
+  );
+}
+
 async function handleAdd(chatId: string, text: string) {
   try {
     const parsed = parseAddCommand(text);
 
-    // If string returned, it's an error/help message
     if (typeof parsed === 'string') {
       await sendMessage(parsed, chatId);
       return;
     }
 
-    console.log('Adding student:', JSON.stringify(parsed));
     const student = await addStudent(parsed);
-    console.log('Student added:', student.id);
     await sendMessage(formatStudentAdded(student), chatId);
   } catch (error) {
     console.error('handleAdd error:', error);
     await sendMessage(
       '⚠️ Lỗi khi thêm học viên. Vui lòng thử lại.\n\nChi tiết: ' +
-      (error instanceof Error ? error.message : String(error)),
+        (error instanceof Error ? error.message : String(error)),
       chatId,
     );
   }
