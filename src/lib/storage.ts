@@ -46,13 +46,23 @@ async function findBlobUrl(): Promise<string | null> {
  */
 export async function getStudents(): Promise<Student[]> {
   try {
+    console.log('getStudents: looking for blob...');
     const url = await findBlobUrl();
-    if (!url) return [];
+    if (!url) {
+      console.log('getStudents: no blob found, returning empty');
+      return [];
+    }
+    console.log('getStudents: fetching from', url);
     const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.error('getStudents: fetch failed', res.status, res.statusText);
+      return [];
+    }
     const data: Student[] = await res.json();
+    console.log('getStudents: loaded', data.length, 'students');
     return data;
-  } catch {
+  } catch (error) {
+    console.error('getStudents error:', error);
     return [];
   }
 }
@@ -62,11 +72,13 @@ export async function getStudents(): Promise<Student[]> {
  * Uses `addRandomSuffix: false` so the pathname stays stable.
  */
 export async function saveStudents(students: Student[]): Promise<void> {
-  await put(BLOB_FILENAME, JSON.stringify(students, null, 2), {
+  console.log('saveStudents: saving', students.length, 'students to blob');
+  const blob = await put(BLOB_FILENAME, JSON.stringify(students, null, 2), {
     access: 'public',
     addRandomSuffix: false,
     contentType: 'application/json',
   });
+  console.log('saveStudents: saved to', blob.url);
 }
 
 /**
