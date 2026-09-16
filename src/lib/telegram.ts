@@ -348,8 +348,17 @@ export function parseAddCommand(text: string): ParsedStudent | string {
   const fullDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
   // Validate the constructed date is real
-  const dateObj = new Date(fullDate + 'T00:00:00+07:00');
-  if (isNaN(dateObj.getTime()) || dateObj.getDate() !== day) {
+  const [dayStr, monthStr] = fullDate.split('-');
+
+  const dateObj = new Date(
+    `${year}-${monthStr.padStart(2, '0')}-${dayStr.padStart(2, '0')}T00:00:00+07:00`
+  );
+
+  if (
+    isNaN(dateObj.getTime()) ||
+    dateObj.getDate() !== Number(day) ||
+    dateObj.getMonth() + 1 !== Number(monthStr)
+  ) {
     return '❌ Ngày không hợp lệ!';
   }
 
