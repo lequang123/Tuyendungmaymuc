@@ -65,6 +65,7 @@ export async function saveStudents(students: Student[]): Promise<void> {
   await put(BLOB_FILENAME, JSON.stringify(students, null, 2), {
     access: 'public',
     addRandomSuffix: false,
+    allowOverwrite: true,
     contentType: 'application/json',
   });
 }
