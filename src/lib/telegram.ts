@@ -354,14 +354,6 @@ export function parseAddCommand(text: string): ParsedStudent | string {
     `${year}-${monthStr.padStart(2, '0')}-${dayStr.padStart(2, '0')}T00:00:00+07:00`
   );
 
-  if (
-    isNaN(dateObj.getTime()) ||
-    dateObj.getDate() !== Number(day) ||
-    dateObj.getMonth() + 1 !== Number(monthStr)
-  ) {
-    return '❌ Ngày không hợp lệ!';
-  }
-
   // Validate phone (basic)
   if (!/^[0-9]{8,15}$/.test(phone.replace(/[\s\-\.]/g, ''))) {
     return '❌ Số điện thoại không hợp lệ! Chỉ nhập số (8-15 chữ số).';
